@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel admin — Mi Tienda de Ropa</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <nav class="admin-nav">
+      <span class="brand js-logo js-store-name">Tienda</span>
+      <a href="#productos" class="active" data-tab="productos">
+        <span class="ico" style="width:17px;height:17px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></span>
+        Productos
+      </a>
+      <a href="#ajustes" data-tab="ajustes">
+        <span class="ico" style="width:17px;height:17px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
+        Ajustes
+      </a>
+      <div class="spacer"></div>
+      <a href="/" target="_blank">
+        <span class="ico" style="width:17px;height:17px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
+        Ver tienda
+      </a>
+      <a href="#" class="js-logout">
+        <span class="ico" style="width:17px;height:17px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+        Cerrar sesión
+      </a>
+    </nav>
+
+    <main class="admin-main">
+      <!-- ============ PRODUCTOS ============ -->
+      <section id="tab-productos">
+        <div class="admin-top">
+          <h1>Productos</h1>
+          <button class="btn btn-primary js-new">
+            <span class="ico" style="width:16px;height:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+            Nuevo producto
+          </button>
+        </div>
+
+        <div class="stats-row js-stats"></div>
+
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Talles</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="js-rows"></tbody>
+        </table>
+        <div class="empty-state js-empty" style="display:none">Todavía no hay productos. Creá el primero con "Nuevo producto".</div>
+      </section>
+
+      <!-- ============ AJUSTES ============ -->
+      <section id="tab-ajustes" style="display:none">
+        <div class="admin-top"><h1>Ajustes</h1></div>
+
+        <!-- Logo -->
+        <div class="modal" style="max-width:520px;box-shadow:none;border:1px solid var(--border);margin-bottom:20px">
+          <h3 style="font-weight:800;margin-bottom:14px">Logo de la tienda</h3>
+          <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+            <div class="js-logo-preview" style="width:96px;height:96px;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;background:#fbfaf7;overflow:hidden">
+              <span class="muted">Sin logo</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="btn btn-sm btn-ghost js-logo-pick" type="button">
+                <span class="ico" style="width:15px;height:15px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+                Subir logo
+              </button>
+              <button class="btn btn-sm btn-danger js-logo-del" type="button" style="display:none">Quitar logo</button>
+              <span class="muted">Se muestra en la cabecera de la tienda.</span>
+            </div>
+          </div>
+          <input type="file" accept="image/*" hidden class="js-logo-file">
+        </div>
+
+        <div class="modal" style="max-width:520px;box-shadow:none;border:1px solid var(--border)">
+          <h3 style="font-weight:800;margin-bottom:14px">Datos de la tienda</h3>
+          <form class="form-grid" style="grid-template-columns:1fr" id="settings-form">
+            <div class="form-field">
+              <label>Nombre de la tienda</label>
+              <input name="store_name" required>
+            </div>
+            <div class="form-field">
+              <label>Número de WhatsApp (con código de país, solo dígitos)</label>
+              <input name="whatsapp_number" placeholder="5491122334455" inputmode="numeric">
+            </div>
+            <div class="form-field">
+              <label>Símbolo de moneda</label>
+              <input name="currency" placeholder="$" maxlength="4">
+            </div>
+            <button class="btn btn-dark" type="submit">Guardar ajustes</button>
+          </form>
+        </div>
+
+        <div class="modal" style="max-width:520px;box-shadow:none;border:1px solid var(--border);margin-top:20px">
+          <h3 style="font-weight:800;margin-bottom:8px">Foto de modelo con IA</h3>
+          <p class="muted js-ai-status">Cargando…</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ============ MODAL EDITOR DE PRODUCTO ============ -->
+  <div class="modal-overlay" id="editor-overlay">
+    <div class="modal">
+      <div class="modal-head">
+        <h2 class="js-editor-title">Nuevo producto</h2>
+        <button class="close-x js-close-editor" aria-label="Cerrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+
+      <form id="product-form">
+        <input type="hidden" name="id">
+        <div class="form-grid">
+          <div class="form-field full">
+            <label>Nombre</label>
+            <input name="name" required placeholder="Remera oversize">
+          </div>
+          <div class="form-field">
+            <label>Precio</label>
+            <input name="price" type="number" min="0" step="0.01" required placeholder="15000">
+          </div>
+          <div class="form-field">
+            <label>Cantidad (stock)</label>
+            <input name="stock" type="number" min="0" step="1" required placeholder="10">
+          </div>
+          <div class="form-field full">
+            <label>Descripción</label>
+            <textarea name="description" placeholder="Algodón peinado, corte holgado, estampado frontal…"></textarea>
+          </div>
+          <div class="form-field full">
+            <label>Talles disponibles</label>
+            <div class="check-row js-sizes-picker"></div>
+          </div>
+          <div class="form-field full">
+            <label class="switch-row">
+              <input type="checkbox" name="active" checked>
+              Visible en la tienda
+            </label>
+          </div>
+        </div>
+
+        <!-- Gestor de fotos -->
+        <div class="photos-box js-photos-box" style="display:none">
+          <h3>Fotos del producto</h3>
+          <div class="drop-zone js-drop">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
+            Arrastrá fotos de la prenda acá o hacé clic para elegir archivos
+            <span style="font-size:.78rem">Cualquier formato: JPG, PNG, WEBP, HEIC… podés ajustarla antes de subir</span>
+            <input type="file" accept="image/*" multiple hidden class="js-file">
+          </div>
+          <div class="photo-grid js-photo-grid"></div>
+        </div>
+
+        <div class="modal-foot">
+          <button type="button" class="btn btn-ghost js-close-editor">Cancelar</button>
+          <button type="submit" class="btn btn-primary js-save">Guardar producto</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/util.js"></script>
+  <script src="/js/imgedit.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

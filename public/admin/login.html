@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Mi Tienda de Ropa</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="admin-body">
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>Panel de admin</h1>
+      <p class="sub">Gestioná tu catálogo de ropa</p>
+      <div class="login-error js-error"></div>
+      <form class="form-grid" style="grid-template-columns:1fr" autocomplete="off">
+        <div class="form-field">
+          <label>Usuario</label>
+          <input name="username" required autofocus>
+        </div>
+        <div class="form-field">
+          <label>Contraseña</label>
+          <input name="password" type="password" required>
+        </div>
+        <button class="btn btn-dark" type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/util.js"></script>
+  <script src="/js/admin-login.js"></script>
+</body>
+</html>

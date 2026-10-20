@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Tienda de Ropa — Catálogo</title>
+  <meta name="description" content="Catálogo de ropa online. Elegí tus prendas y pedí directo por WhatsApp.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand js-logo js-store-name">Mi Tienda de Ropa</a>
+      <div class="header-actions">
+        <button class="icon-btn js-open-cart" aria-label="Abrir pedido">
+          <span class="ico" style="width:19px;height:19px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+          Mi pedido
+          <span class="cart-badge" style="display:none">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="hero-kicker"><span class="ico" style="width:15px;height:15px"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8L12 2z"/></svg></span> Colección seleccionada</span>
+        <h1>Moda que habla<br><em>por vos</em></h1>
+        <p>Elegí tu prenda, tu talle y pedí en segundos por WhatsApp.</p>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="filters">
+        <div class="size-filters js-size-filters"></div>
+        <select class="sort-select js-sort" aria-label="Ordenar">
+          <option value="new">Más recientes</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="name">Nombre A–Z</option>
+        </select>
+      </div>
+      <div class="product-grid js-grid"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <span class="js-store-name">Mi Tienda de Ropa</span> · Pedidos por WhatsApp <span class="js-wa-number"></span>
+    </div>
+  </footer>
+
+  <script src="/js/util.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/catalog.js"></script>
+</body>
+</html>
