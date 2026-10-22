@@ -89,16 +89,16 @@ function cardHTML(p, i = 0) {
 
   return `
   <div class="product-card reveal" data-id="${p.id}" style="transition-delay:${Math.min(i * 45, 360)}ms">
-    <a class="card-link" href="${url}" aria-label="${esc(p.name)}">
-      <div class="card-img-wrap">
-        ${off > 0 ? `<span class="badge-off">-${off}%</span>` : ''}
-        <img class="card-img" src="${esc(p.main_image || placeholderImg())}" alt="${esc(p.name)}" loading="lazy" onerror="this.src=placeholderImg()">
-      </div>
-    </a>
-    <button class="fav-btn ${faved ? 'faved' : ''}" data-fav="${p.id}" aria-label="Guardar en favoritos" aria-pressed="${faved}">
-      <svg viewBox="0 0 24 24" fill="${faved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21.2l7.7-7.7 1.1-1a5.5 5.5 0 0 0 0-7.9z"/></svg>
-    </button>
-    ${out ? '' : `<button class="quick-add" data-add="${p.id}">Agregar</button>`}
+    <div class="card-img-wrap">
+      <a class="card-link" href="${url}" aria-label="${esc(p.name)}">
+        <img class="card-img" src="${esc(p.main_image || placeholderImg())}" alt="${esc(p.name)}" onerror="this.src=placeholderImg()">
+      </a>
+      ${off > 0 ? `<span class="badge-off">-${off}%</span>` : ''}
+      <button class="fav-btn ${faved ? 'faved' : ''}" data-fav="${p.id}" aria-label="Guardar en favoritos" aria-pressed="${faved}">
+        <svg viewBox="0 0 24 24" fill="${faved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1L12 21.2l7.7-7.7 1.1-1a5.5 5.5 0 0 0 0-7.9z"/></svg>
+      </button>
+      ${out ? '' : `<button class="quick-add" data-add="${p.id}">Agregar</button>`}
+    </div>
     <div class="card-body">
       ${(p.category || '') ? `<div class="card-cat">${esc(p.category)}</div>` : ''}
       <a href="${url}"><h3>${esc(p.name)}</h3></a>

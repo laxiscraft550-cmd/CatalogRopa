@@ -113,6 +113,15 @@ function initReveal(root = document) {
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
   els.forEach((el) => io.observe(el));
+
+  // Red de seguridad: si el observer no dispara (pestaña oculta, etc.),
+  // revelamos todo tras un momento para que nunca quede contenido invisible.
+  setTimeout(() => {
+    root.querySelectorAll('.reveal:not(.reveal-on)').forEach((el) => {
+      el.classList.add('reveal-on');
+      io.unobserve(el);
+    });
+  }, 2500);
 }
 
 /* ---------- Header que se contrae al hacer scroll ---------- */
