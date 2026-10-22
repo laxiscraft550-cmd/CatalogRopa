@@ -32,6 +32,6 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`\n  Tienda de ropa corriendo en  http://localhost:${PORT}`);
+  console.log(`\n  Tienda corriendo en       http://localhost:${PORT}`);
   console.log(`  Panel de admin               http://localhost:${PORT}/admin/login.html\n`);
 });

@@ -76,7 +76,7 @@ if (!adminRow) {
 
 // --- Seed: ajustes por defecto ---
 const seedSettings = {
-  store_name: process.env.STORE_NAME || 'Mi Tienda de Ropa',
+  store_name: process.env.STORE_NAME || 'Mi Tienda',
   whatsapp_number: process.env.WHATSAPP_NUMBER || '',
   currency: process.env.CURRENCY || '$',
   logo_url: ''

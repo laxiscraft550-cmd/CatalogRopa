@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel admin — Mi Tienda de Ropa</title>
+  <title>Panel admin — Mi Tienda</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="admin-body">
@@ -55,7 +55,7 @@
               <th>Venta</th>
               <th>Ganancia</th>
               <th>Stock</th>
-              <th>Talles</th>
+              <th>Talles / Opc.</th>
               <th>Estado</th>
               <th>Acciones</th>
             </tr>
@@ -97,7 +97,7 @@
             </div>
             <div class="form-field">
               <label>Número de WhatsApp (con código de país, solo dígitos)</label>
-              <input name="whatsapp_number" placeholder="5491122334455" inputmode="numeric">
+              <input name="whatsapp_number" placeholder="51987654321" inputmode="numeric">
             </div>
             <div class="form-field">
               <label>Símbolo de moneda</label>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="modal" style="max-width:520px;box-shadow:none;border:1px solid var(--border);margin-top:20px">
-          <h3 style="font-weight:800;margin-bottom:8px">Foto de modelo con IA</h3>
+          <h3 style="font-weight:800;margin-bottom:8px">Fotos con IA</h3>
           <p class="muted js-ai-status">Cargando…</p>
         </div>
       </section>
@@ -117,8 +117,9 @@
       <section id="tab-calculadora" style="display:none">
         <div class="admin-top"><h1>Calculadora de precio</h1></div>
         <p class="muted" style="max-width:640px;margin-bottom:20px">
-          Calculá a cuánto vender un producto según lo que pagaste. Ideal para revender ropa:
-          poné tu costo, elegí el tipo de prenda y obtené el precio sugerido con su margen de ganancia.
+          Calculá a cuánto vender un producto según lo que pagaste. Ideal para revender de todo:
+          ropa, tecnología, cosas del hogar, perfumes, accesorios… poné tu costo, elegí el tipo
+          de producto y obtené el precio sugerido con su margen de ganancia.
         </p>
 
         <div class="calc-layout">
@@ -129,11 +130,13 @@
                 <input name="costo" type="number" min="0" step="0.01" placeholder="30" inputmode="decimal">
               </div>
               <div class="form-field">
-                <label>Tipo de prenda</label>
+                <label>Tipo de producto</label>
                 <select name="origen">
                   <option value="nacional">Ropa nacional</option>
                   <option value="importado">Ropa importada</option>
                   <option value="marca">De marca</option>
+                  <option value="tecnologia">Tecnología / electro</option>
+                  <option value="general">Hogar, perfumes, accesorios</option>
                 </select>
               </div>
               <div class="form-field">
@@ -181,7 +184,7 @@
         <div class="form-grid">
           <div class="form-field full">
             <label>Nombre</label>
-            <input name="name" required placeholder="Remera oversize">
+            <input name="name" required placeholder="Perfume, audífonos, abrelatas…">
           </div>
           <div class="form-field">
             <label>Precio de venta (S/) <button type="button" class="link-btn js-suggest-price">Sugerir</button></label>
@@ -201,15 +204,15 @@
           </div>
           <div class="form-field full">
             <label>Descripción</label>
-            <textarea name="description" placeholder="Algodón peinado, corte holgado, estampado frontal…"></textarea>
+            <textarea name="description" placeholder="Marca, material, estado, garantía, motivo de la oferta…"></textarea>
           </div>
           <div class="form-field">
             <label>Categoría</label>
-            <input name="category" list="cat-list" placeholder="Pantalones, Camisetas, Vestidos…">
+            <input name="category" list="cat-list" placeholder="Tecnología, Hogar, Perfumes, Accesorios…">
             <datalist id="cat-list"></datalist>
           </div>
           <div class="form-field full">
-            <label>Talles disponibles</label>
+            <label>Talles / opciones <span class="muted" style="text-transform:none;letter-spacing:0">(solo si aplica: ropa, zapatos…)</span></label>
             <div class="check-row js-sizes-picker"></div>
           </div>
           <div class="form-field full">
@@ -225,7 +228,7 @@
           <h3>Fotos del producto</h3>
           <div class="drop-zone js-drop">
             <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span>
-            Arrastrá fotos de la prenda acá o hacé clic para elegir archivos
+            Arrastrá las fotos del producto acá o hacé clic para elegir archivos
             <span style="font-size:.78rem">Cualquier formato: JPG, PNG, WEBP, HEIC… podés ajustarla antes de subir</span>
             <input type="file" accept="image/*" multiple hidden class="js-file">
           </div>

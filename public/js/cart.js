@@ -121,14 +121,14 @@ function mountCartDrawer() {
     const items = Cart.getItems();
     const box = overlay.querySelector('.js-cart-items');
     if (!items.length) {
-      box.innerHTML = '<div class="cart-empty">Tu pedido está vacío.<br>Explorá el catálogo y agregá prendas.</div>';
+      box.innerHTML = '<div class="cart-empty">Tu pedido está vacío.<br>Explorá el catálogo y agregá productos.</div>';
     } else {
       box.innerHTML = items.map((i) => `
         <div class="cart-item">
           <img src="${esc(i.image || placeholderImg())}" alt="${esc(i.name)}" onerror="this.src=placeholderImg()">
           <div class="cart-item-info">
             <h4>${esc(i.name)}</h4>
-            <div class="cart-item-meta">${i.size ? 'Talle ' + esc(i.size) : 'Sin talle'}</div>
+            <div class="cart-item-meta">${i.size ? 'Talle ' + esc(i.size) : ''}</div>
             <div class="cart-item-row">
               <div class="mini-qty">
                 <button data-id="${i.id}" data-size="${esc(i.size)}" data-delta="-1" aria-label="Quitar uno"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>

@@ -131,7 +131,7 @@ function render() {
   if (!list.length) {
     grid.innerHTML = `<div class="empty-state">${searchTerm
       ? 'No encontramos productos con esa búsqueda. Probá con otra palabra.'
-      : 'No hay prendas disponibles por ahora. Volvé pronto.'}</div>`;
+      : 'No hay productos disponibles por ahora. Volvé pronto.'}</div>`;
     return;
   }
 

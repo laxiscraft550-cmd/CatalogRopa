@@ -10,7 +10,7 @@ const router = express.Router();
 router.get('/settings', (req, res) => {
   const s = getSettings();
   res.json({
-    store_name: s.store_name || 'Mi Tienda de Ropa',
+    store_name: s.store_name || 'Mi Tienda',
     whatsapp_number: s.whatsapp_number || '',
     currency: s.currency || '$',
     logo_url: s.logo_url || ''

@@ -17,7 +17,7 @@ async function api(path, options = {}) {
 }
 
 let CURRENCY = '$';
-let STORE_NAME = 'Mi Tienda de Ropa';
+let STORE_NAME = 'Mi Tienda';
 let LOGO_URL = '';
 
 function fmtMoney(n) {
@@ -29,7 +29,7 @@ async function loadGlobalSettings() {
   try {
     const s = await api('/api/settings');
     CURRENCY = s.currency || '$';
-    STORE_NAME = s.store_name || 'Mi Tienda de Ropa';
+    STORE_NAME = s.store_name || 'Mi Tienda';
     LOGO_URL = s.logo_url || '';
     document.querySelectorAll('.js-store-name').forEach((el) => { el.textContent = STORE_NAME; });
     document.querySelectorAll('.js-logo').forEach((el) => {
@@ -39,7 +39,7 @@ async function loadGlobalSettings() {
         el.innerHTML = `<span class="brand-text">${esc(STORE_NAME)}</span>`;
       }
     });
-    document.title = `${STORE_NAME} — Ropa con envío por WhatsApp`;
+    document.title = `${STORE_NAME} — Ofertas con envío por WhatsApp`;
   } catch { /* defaults */ }
   return { store_name: STORE_NAME, currency: CURRENCY, logo_url: LOGO_URL };
 }
@@ -93,7 +93,7 @@ function esc(s) {
 }
 
 function placeholderImg(text = 'Sin foto') {
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eceae4"/><stop offset="1" stop-color="#dedad2"/></linearGradient></defs><rect width="300" height="400" fill="url(#g)"/><g fill="none" stroke="#b3aea3" stroke-width="2"><path d="M110 150l-20 20v100h120V170l-20-20-25 15-25-15-30 15z"/></g><text x="150" y="330" font-family="sans-serif" font-size="13" fill="#9d988d" text-anchor="middle">${text}</text></svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eceae4"/><stop offset="1" stop-color="#dedad2"/></linearGradient></defs><rect width="300" height="400" fill="url(#g)"/><g fill="none" stroke="#b3aea3" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"><path d="M150 140l60 30v70l-60 30-60-30v-70z"/><path d="M90 170l60 30 60-30"/><path d="M150 200v70"/></g><text x="150" y="330" font-family="sans-serif" font-size="13" fill="#9d988d" text-anchor="middle">${text}</text></svg>`;
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
 }
 

@@ -2,7 +2,8 @@
 
 /* Panel de admin: CRUD de productos, fotos con editor, logo, IA y ajustes */
 
-// Tallas agrupadas: letras (ropa) y numericas de pantalon (cintura pulgadas)
+// Tallas agrupadas: letras (ropa) y numericas de pantalon (cintura pulgadas).
+// Solo se usan en prendas de ropa; el resto de productos no lleva talle.
 const SIZE_GROUPS = [
   { label: 'Ropa (letras)', sizes: ['Único', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'] },
   { label: 'Pantalón (pulgadas)', sizes: ['26', '28', '30', '32', '34', '36', '38', '40', '42', '44'] }
@@ -58,7 +59,7 @@ async function loadAiStatus() {
     const el = document.querySelector('.js-ai-status');
     if (!el) return;
     el.innerHTML = s.configured
-      ? `Proveedor activo: <b>${esc(s.provider)}</b>. En cada foto de prenda aparecerá el botón "Foto de modelo" para convertirla en una imagen de maniquí.`
+      ? `Proveedor activo: <b>${esc(s.provider)}</b>. En cada foto aparecerá el botón "Generar foto" para convertirla en una imagen de catálogo (maniquí si es ropa, producto si es otra cosa).`
       : `Sin configurar. Para activarla, editá el archivo <code>.env</code> y poné:<br><code>IA_PROVIDER=gemini</code><br><code>IA_API_KEY=tu-clave</code><br>y reiniciá el servidor. Mientras tanto podés subir vos las fotos de modelo manualmente.`;
   } catch { /* IA desactivada */ }
 }
@@ -74,11 +75,20 @@ async function loadProducts() {
   fillCategoryList();
 }
 
-// Llena el datalist de categorías con las ya usadas
+// Categorías sugeridas para productos variados (se suman a las ya usadas)
+const SUGGEST_CATS = [
+  'Tecnología', 'Hogar y cocina', 'Perfumes', 'Accesorios', 'Ropa',
+  'Zapatos', 'Bolsos', 'Belleza y cuidado', 'Deportes', 'Juguetes', 'Ofertas'
+];
+
+// Llena el datalist de categorías con las ya usadas + las sugeridas
 function fillCategoryList() {
   const dl = document.getElementById('cat-list');
   if (!dl) return;
-  const cats = [...new Set(PRODUCTS.map((p) => (p.category || '').trim()).filter(Boolean))];
+  const cats = [...new Set([
+    ...PRODUCTS.map((p) => (p.category || '').trim()).filter(Boolean),
+    ...SUGGEST_CATS
+  ])];
   dl.innerHTML = cats.map((c) => `<option value="${esc(c)}">`).join('');
 }
 
@@ -264,12 +274,12 @@ function renderPhotos() {
         <img src="${esc(img.url)}" alt="" onerror="this.src=placeholderImg()">
         <div class="ph-actions">
           <button class="mini ${img.is_main ? 'main-on' : ''} js-main" ${img.is_main ? 'disabled' : ''}>${img.is_main ? 'Principal' : 'Hacer principal'}</button>
-          <button class="mini gen js-gen" ${img.kind === 'generated' ? 'disabled' : ''}>${img.kind === 'generated' ? 'Foto de modelo' : 'Generar modelo'}</button>
+          <button class="mini gen js-gen" ${img.kind === 'generated' ? 'disabled' : ''}>${img.kind === 'generated' ? 'Foto generada' : 'Generar foto'}</button>
           <button class="mini js-del-img">${icon('trash', 12)} Borrar</button>
         </div>
         <div class="kind-tag">${img.kind === 'generated' ? 'Generada con IA' : 'Subida'}</div>
       </div>`).join('')
-    : '<p class="muted">Todavía sin fotos. Subí la foto de la prenda.</p>';
+    : '<p class="muted">Todavía sin fotos. Subí la foto del producto.</p>';
 }
 
 // Subida con editor de ajuste
@@ -339,7 +349,7 @@ document.querySelector('.js-photo-grid').addEventListener('click', async (e) => 
     try {
       const r = await api(`/api/admin/images/${imgId}/generate-model`, { method: 'POST' });
       CURRENT.images = r.images;
-      toast('Foto de modelo generada');
+      toast('Foto de catálogo generada');
       renderPhotos();
       loadProducts();
     } catch (err) {

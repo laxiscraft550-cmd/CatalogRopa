@@ -1,15 +1,17 @@
 'use strict';
 
 /* ============================================================
-   Calculadora de precios para revender ropa.
-   Reglas por defecto pensadas para reventa de ropa (nacional e
-   importada), ajustables por la persona.
+   Calculadora de precios para revender productos variados
+   (ropa, tecnología, hogar, perfumes, accesorios, etc.).
+   Reglas por defecto ajustables por la persona.
    ============================================================ */
 
 const CalcDefaults = {
   // Markup sobre costo (multiplicador). Ej: 2.5 = vender a 2.5x lo que costó
   markupNacional: 2.5,
   markupImportado: 3.0,
+  markupTecnologia: 1.8,   // tecnología: margen más ajustado, compite por precio
+  markupGeneral: 3.0,      // hogar, perfumes, accesorios
   // Descuento habitual de "precio tachado" (precio de etiqueta inflado)
   markupEtiqueta: 2.0,
   // Comisiones/gastos típicos en % sobre el precio de venta
@@ -30,9 +32,11 @@ function calcPrecio({
   costo = Number(costo) || 0;
   if (costo <= 0) return null;
 
-  // Base multiplicadora según origen
+  // Base multiplicadora según tipo de producto
   let markup;
-  if (origen === 'marca') markup = CalcDefaults.markupImportado;
+  if (origen === 'tecnologia') markup = CalcDefaults.markupTecnologia;
+  else if (origen === 'general') markup = CalcDefaults.markupGeneral;
+  else if (origen === 'marca') markup = CalcDefaults.markupImportado;
   else if (origen === 'importado') markup = CalcDefaults.markupImportado;
   else markup = CalcDefaults.markupNacional;
 
@@ -126,7 +130,7 @@ function initCalc() {
 
     // Escenarios rápidos
     const escenarios = [
-      { n: 'Conservador (2x)', m: 2 },
+      { n: 'Mínimo (1.5x)', m: 1.5 },
       { n: 'Recomendado (2.5x)', m: 2.5 },
       { n: 'Premium (3x)', m: 3 }
     ].map((e) => {
@@ -156,7 +160,7 @@ function initCalc() {
         <tbody>${escenarios}</tbody>
       </table>
 
-      <p class="calc-tip"><b>Consejo:</b> En Perú, la reventa de ropa nacional suele ir entre <b>2x y 2.5x</b> el costo, y la ropa importada/marca entre <b>2.5x y 3x</b>. Ajustá con las herramientas de arriba si tenés gastos de envío o comisión de plataforma.</p>
+      <p class="calc-tip"><b>Consejo:</b> En Perú, la reventa de <b>ropa nacional</b> suele ir entre <b>2x y 2.5x</b> el costo, y la <b>ropa importada o de marca entre 2.5x y 3x</b>. Para <b>tecnología y electrodomésticos</b> el margen suele ser más ajustado (1.5x–2x) porque compite por precio; para <b>perfumes, accesorios y hogar</b> se puede sostener mejor (2.5x–3.5x). Ajustá con las herramientas de arriba si tenés gastos de envío o comisión de plataforma.</p>
     `;
   }
 
