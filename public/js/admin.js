@@ -2,7 +2,12 @@
 
 /* Panel de admin: CRUD de productos, fotos con editor, logo, IA y ajustes */
 
-const ALL_SIZES = ['Único', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'];
+// Tallas agrupadas: letras (ropa) y numericas de pantalon (cintura pulgadas)
+const SIZE_GROUPS = [
+  { label: 'Ropa (letras)', sizes: ['Único', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL'] },
+  { label: 'Pantalón (pulgadas)', sizes: ['26', '28', '30', '32', '34', '36', '38', '40', '42', '44'] }
+];
+const ALL_SIZES = SIZE_GROUPS.flatMap((g) => g.sizes);
 let PRODUCTS = [];
 let AI_CONFIGURED = false;
 
@@ -34,6 +39,8 @@ document.querySelectorAll('.admin-nav a[data-tab]').forEach((a) => {
     const tab = a.dataset.tab;
     document.getElementById('tab-productos').style.display = tab === 'productos' ? '' : 'none';
     document.getElementById('tab-ajustes').style.display = tab === 'ajustes' ? '' : 'none';
+    document.getElementById('tab-calculadora').style.display = tab === 'calculadora' ? '' : 'none';
+    if (tab === 'calculadora') initCalc();
   });
 });
 
@@ -64,6 +71,15 @@ async function loadProducts() {
   }
   renderStats();
   renderRows();
+  fillCategoryList();
+}
+
+// Llena el datalist de categorías con las ya usadas
+function fillCategoryList() {
+  const dl = document.getElementById('cat-list');
+  if (!dl) return;
+  const cats = [...new Set(PRODUCTS.map((p) => (p.category || '').trim()).filter(Boolean))];
+  dl.innerHTML = cats.map((c) => `<option value="${esc(c)}">`).join('');
 }
 
 function renderStats() {
@@ -71,24 +87,41 @@ function renderStats() {
   const visible = PRODUCTS.filter((p) => p.active).length;
   const stock = PRODUCTS.reduce((s, p) => s + (p.stock || 0), 0);
   const low = PRODUCTS.filter((p) => p.stock > 0 && p.stock <= 3).length;
+  // Rentabilidad potencial: suma de (precio - costo) * stock de los productos con costo cargado
+  const renta = PRODUCTS.reduce((s, p) => {
+    const c = Number(p.cost) || 0;
+    if (c <= 0) return s;
+    return s + ((Number(p.price) || 0) - c) * (p.stock || 0);
+  }, 0);
   document.querySelector('.js-stats').innerHTML = [
     ['Productos', total],
     ['Visibles', visible],
     ['Unidades en stock', stock],
-    ['Poco stock (≤3)', low]
+    ['Poco stock (≤3)', low],
+    ['Ganancia potencial', fmtMoney(Math.max(0, Math.round(renta)))]
   ].map(([lbl, num]) => `<div class="stat-card"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`).join('');
 }
 
 function renderRows() {
   const tbody = document.querySelector('.js-rows');
   document.querySelector('.js-empty').style.display = PRODUCTS.length ? 'none' : 'block';
-  tbody.innerHTML = PRODUCTS.map((p) => `
+  tbody.innerHTML = PRODUCTS.map((p) => {
+    const cost = Number(p.cost) || 0;
+    const price = Number(p.price) || 0;
+    const ganancia = cost > 0 ? price - cost : null;
+    const margen = cost > 0 && price > 0 ? Math.round(((price - cost) / price) * 100) : null;
+    const gananciaHtml = ganancia === null
+      ? '<span class="muted">—</span>'
+      : `<div class="ganancia ${ganancia > 0 ? 'pos' : 'neg'}">${fmtMoney(ganancia)}<span class="margen">${margen}%</span></div>`;
+    return `
     <tr>
       <td>${p.main_image
         ? `<img class="thumb-sm" src="${esc(p.main_image)}" alt="" onerror="this.style.display='none'">`
         : `<div class="thumb-none">${icon('image', 20)}</div>`}</td>
-      <td><b>${esc(p.name)}</b><div class="muted">${esc((p.description || '').slice(0, 60))}${(p.description || '').length > 60 ? '…' : ''}</div></td>
-      <td>${fmtMoney(p.price)}</td>
+      <td><b>${esc(p.name)}</b><div class="muted">${esc((p.description || '').slice(0, 50))}${(p.description || '').length > 50 ? '…' : ''}</div></td>
+      <td>${cost > 0 ? fmtMoney(cost) : '<span class="muted">—</span>'}</td>
+      <td><b>${fmtMoney(price)}</b></td>
+      <td>${gananciaHtml}</td>
       <td>${p.stock}</td>
       <td class="muted">${(p.sizes || []).map(esc).join(' · ') || '—'}</td>
       <td><span class="tag ${p.active ? 'tag-on' : 'tag-off'}">${p.active ? 'Visible' : 'Oculto'}</span></td>
@@ -99,7 +132,8 @@ function renderRows() {
           <button class="btn btn-sm btn-danger js-del" data-id="${p.id}">${icon('trash', 14)}</button>
         </div>
       </td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 /* ---------- Acciones de la tabla ---------- */
@@ -132,9 +166,13 @@ const overlay = document.getElementById('editor-overlay');
 const form = document.getElementById('product-form');
 let CURRENT = null;
 
-document.querySelector('.js-sizes-picker').innerHTML = ALL_SIZES.map((s) =>
-  `<label class="check-chip"><input type="checkbox" value="${s}">${s}</label>`
-).join('');
+document.querySelector('.js-sizes-picker').innerHTML = SIZE_GROUPS.map((g) => `
+  <div class="size-group" style="width:100%">
+    <span class="size-group-label">${g.label}</span>
+    <div class="check-row" style="margin-bottom:6px">
+      ${g.sizes.map((s) => `<label class="check-chip"><input type="checkbox" value="${s}">${s}</label>`).join('')}
+    </div>
+  </div>`).join('');
 document.querySelector('.js-sizes-picker').addEventListener('change', (e) => {
   e.target.closest('.check-chip').classList.toggle('on', e.target.checked);
 });
@@ -143,14 +181,29 @@ document.querySelector('.js-new').addEventListener('click', () => openEditor(nul
 document.querySelectorAll('.js-close-editor').forEach((b) => b.addEventListener('click', closeEditor));
 overlay.addEventListener('click', (e) => { if (e.target === overlay) closeEditor(); });
 
+// Sugerir precio de venta a partir del costo
+document.querySelector('.js-suggest-price').addEventListener('click', () => {
+  const costo = Number(form.cost.value) || 0;
+  if (costo <= 0) return toast('Primero cargá el precio de compra', 'error');
+  // 2.5x para nacional, 3x para marca (no distinguimos tipo acá, usamos 2.5x por defecto
+  // pero si hay precio de etiqueta en el campo, asumimos marca -> 3x)
+  const markup = 2.5;
+  const p = Math.round(costo * markup);
+  form.price.value = p % 10 === 0 ? p - 1 : p;
+  toast(`Precio sugerido: ${fmtMoney(form.price.value)} (x${markup} sobre tu costo)`);
+});
+
 function openEditor(p) {
   CURRENT = p;
   form.reset();
   form.id.value = p ? p.id : '';
   form.name.value = p ? p.name : '';
   form.price.value = p ? p.price : '';
+  form.list_price.value = p && p.list_price ? p.list_price : '';
+  form.cost.value = p && p.cost ? p.cost : '';
   form.stock.value = p ? p.stock : '';
   form.description.value = p ? p.description : '';
+  form.category.value = p ? (p.category || '') : '';
   form.active.checked = p ? p.active : true;
   document.querySelectorAll('.js-sizes-picker input').forEach((cb) => {
     cb.checked = p ? (p.sizes || []).includes(cb.value) : false;
@@ -174,8 +227,11 @@ form.addEventListener('submit', async (e) => {
   const body = {
     name: form.name.value,
     price: Number(form.price.value),
+    list_price: Number(form.list_price.value) || 0,
+    cost: Number(form.cost.value) || 0,
     stock: parseInt(form.stock.value, 10) || 0,
     description: form.description.value,
+    category: form.category.value.trim(),
     sizes: [...document.querySelectorAll('.js-sizes-picker input:checked')].map((c) => c.value),
     active: form.active.checked ? 1 : 0
   };

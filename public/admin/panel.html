@@ -18,6 +18,10 @@
         <span class="ico" style="width:17px;height:17px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span>
         Ajustes
       </a>
+      <a href="#calculadora" data-tab="calculadora">
+        <span class="ico" style="width:17px;height:17px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="8" y2="10.01"/><line x1="12" y1="10" x2="12" y2="10.01"/><line x1="16" y1="10" x2="16" y2="10.01"/><line x1="8" y1="14" x2="8" y2="14.01"/><line x1="12" y1="14" x2="12" y2="14.01"/><line x1="16" y1="14" x2="16" y2="18"/><line x1="8" y1="18" x2="12" y2="18"/></svg></span>
+        Calculadora
+      </a>
       <div class="spacer"></div>
       <a href="/" target="_blank">
         <span class="ico" style="width:17px;height:17px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>
@@ -47,7 +51,9 @@
             <tr>
               <th></th>
               <th>Producto</th>
-              <th>Precio</th>
+              <th>Compra</th>
+              <th>Venta</th>
+              <th>Ganancia</th>
               <th>Stock</th>
               <th>Talles</th>
               <th>Estado</th>
@@ -106,6 +112,59 @@
           <p class="muted js-ai-status">Cargando…</p>
         </div>
       </section>
+
+      <!-- ============ CALCULADORA DE PRECIO ============ -->
+      <section id="tab-calculadora" style="display:none">
+        <div class="admin-top"><h1>Calculadora de precio</h1></div>
+        <p class="muted" style="max-width:640px;margin-bottom:20px">
+          Calculá a cuánto vender un producto según lo que pagaste. Ideal para revender ropa:
+          poné tu costo, elegí el tipo de prenda y obtené el precio sugerido con su margen de ganancia.
+        </p>
+
+        <div class="calc-layout">
+          <div class="modal" style="box-shadow:none;border:1px solid var(--border)">
+            <form id="calc-form" class="form-grid" style="grid-template-columns:1fr 1fr">
+              <div class="form-field">
+                <label>¿Cuánto te costó? (S/)</label>
+                <input name="costo" type="number" min="0" step="0.01" placeholder="30" inputmode="decimal">
+              </div>
+              <div class="form-field">
+                <label>Tipo de prenda</label>
+                <select name="origen">
+                  <option value="nacional">Ropa nacional</option>
+                  <option value="importado">Ropa importada</option>
+                  <option value="marca">De marca</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Precio de etiqueta (opcional)</label>
+                <input name="precioEtiqueta" type="number" min="0" step="0.01" placeholder="100" inputmode="decimal">
+              </div>
+              <div class="form-field">
+                <label>Redondeo del precio</label>
+                <select name="redondeo">
+                  <option value="1">Al entero (x9 / x5)</option>
+                  <option value="10">A la decena (x9)</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Envío por unidad (S/)</label>
+                <input name="gastosEnvio" type="number" min="0" step="0.01" placeholder="0" inputmode="decimal">
+              </div>
+              <div class="form-field">
+                <label>Comisión plataforma (%)</label>
+                <input name="gastosPlataforma" type="number" min="0" max="100" step="0.1" placeholder="0" inputmode="decimal">
+              </div>
+              <div class="form-field full">
+                <label>Margen neto objetivo (% del precio) — vacío = automático</label>
+                <input name="margenObjetivo" type="number" min="0" max="95" step="1" placeholder="Ej: 50" inputmode="numeric">
+              </div>
+            </form>
+          </div>
+
+          <div class="calc-panel" id="calc-out"></div>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -125,16 +184,29 @@
             <input name="name" required placeholder="Remera oversize">
           </div>
           <div class="form-field">
-            <label>Precio</label>
-            <input name="price" type="number" min="0" step="0.01" required placeholder="15000">
+            <label>Precio de venta (S/) <button type="button" class="link-btn js-suggest-price">Sugerir</button></label>
+            <input name="price" type="number" min="0" step="0.01" required placeholder="75">
           </div>
           <div class="form-field">
-            <label>Cantidad (stock)</label>
+            <label>Precio de lista / tachado (S/) <span class="muted" style="text-transform:none;letter-spacing:0">(opcional)</span></label>
+            <input name="list_price" type="number" min="0" step="0.01" placeholder="100">
+          </div>
+          <div class="form-field">
+            <label>Precio de compra / costo (S/)</label>
+            <input name="cost" type="number" min="0" step="0.01" placeholder="30">
+          </div>
+          <div class="form-field full">
+            <label>Cantidad en stock (unidades)</label>
             <input name="stock" type="number" min="0" step="1" required placeholder="10">
           </div>
           <div class="form-field full">
             <label>Descripción</label>
             <textarea name="description" placeholder="Algodón peinado, corte holgado, estampado frontal…"></textarea>
+          </div>
+          <div class="form-field">
+            <label>Categoría</label>
+            <input name="category" list="cat-list" placeholder="Pantalones, Camisetas, Vestidos…">
+            <datalist id="cat-list"></datalist>
           </div>
           <div class="form-field full">
             <label>Talles disponibles</label>
@@ -170,6 +242,7 @@
 
   <script src="/js/util.js"></script>
   <script src="/js/imgedit.js"></script>
+  <script src="/js/calculadora.js"></script>
   <script src="/js/admin.js"></script>
 </body>
 </html>

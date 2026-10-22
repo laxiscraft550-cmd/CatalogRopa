@@ -44,6 +44,16 @@ async function loadProduct() {
   // Info
   document.querySelector('.js-name').textContent = PRODUCT.name;
   document.querySelector('.js-price').textContent = fmtMoney(PRODUCT.price);
+
+  // Precio de lista tachado + descuento
+  const listPrice = Number(PRODUCT.list_price) || 0;
+  if (listPrice > PRODUCT.price) {
+    const off = Math.round(((listPrice - PRODUCT.price) / listPrice) * 100);
+    document.querySelector('.js-list-price').textContent = fmtMoney(listPrice);
+    document.querySelector('.js-off').textContent = `${off}% OFF`;
+    document.querySelector('.js-list-price-wrap').style.display = 'flex';
+  }
+
   document.querySelector('.js-desc').textContent = PRODUCT.description || '';
 
   const stockEl = document.querySelector('.js-stock');

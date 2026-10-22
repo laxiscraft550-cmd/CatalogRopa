@@ -20,7 +20,10 @@ db.exec(`
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     name        TEXT    NOT NULL,
     description TEXT    NOT NULL DEFAULT '',
+    category    TEXT    NOT NULL DEFAULT '',
     price       REAL    NOT NULL DEFAULT 0,
+    list_price  REAL    NOT NULL DEFAULT 0,
+    cost        REAL    NOT NULL DEFAULT 0,
     stock       INTEGER NOT NULL DEFAULT 0,
     sizes       TEXT    NOT NULL DEFAULT '[]',
     active      INTEGER NOT NULL DEFAULT 1,
@@ -48,6 +51,18 @@ db.exec(`
     password_hash TEXT NOT NULL
   );
 `);
+
+// --- Migraciones (bases de datos creadas antes de existir la columna) ---
+function ensureColumn(table, column, ddl) {
+  const cols = db.prepare(`PRAGMA table_info(${table})`).all();
+  if (!cols.some((c) => c.name === column)) {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${ddl}`);
+    console.log(`[db] Migración: columna ${table}.${column} agregada`);
+  }
+}
+ensureColumn('products', 'cost', 'cost REAL NOT NULL DEFAULT 0');
+ensureColumn('products', 'list_price', 'list_price REAL NOT NULL DEFAULT 0');
+ensureColumn('products', 'category', "category TEXT NOT NULL DEFAULT ''");
 
 // --- Seed: usuario admin desde .env ---
 const adminRow = db.prepare('SELECT id FROM admin_users WHERE id = 1').get();
@@ -87,7 +102,10 @@ function rowToProduct(row, images = []) {
     id: row.id,
     name: row.name,
     description: row.description,
+    category: row.category || '',
     price: row.price,
+    list_price: row.list_price || 0,
+    cost: row.cost || 0,
     stock: row.stock,
     sizes: JSON.parse(row.sizes || '[]'),
     active: !!row.active,
