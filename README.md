@@ -1,60 +1,92 @@
-# 🛍️ Catálogo de Ropa — Tienda con WhatsApp
+# Mi Tienda — Catalogo de productos con pedidos por WhatsApp
 
-Tienda de ropa tipo catálogo con panel de administración y pedidos por WhatsApp.
+Tienda de catalogo con panel de administracion y pedidos por WhatsApp.
+Venta de productos variados: ropa, tecnologia, cosas del hogar, perfumes,
+accesorios y demas.
 
-## ✨ Qué hace
+## Que hace
 
-- **Catálogo público**: tus clientes ven las prendas, eligen talle y cantidad.
-- **Pedidos por WhatsApp**: el cliente arma su pedido y te lo envía armado con ítems, talles, cantidades y total.
-- **Panel de admin** (`/admin/login.html`): creás y editás productos con fotos, precio, descripción, cantidad y talles.
-- **🤖 Foto de modelo con IA**: subís la foto de la prenda (plana o en maniquí) y el botón "Foto de modelo" la convierte en una imagen de un modelo/maniquí vistiendo esa prenda.
+- **Catalogo publico**: tus clientes ven los productos, filtran por categoria,
+  buscan por nombre y eligen talle (solo si aplica) y cantidad.
+- **Pedidos por WhatsApp**: el cliente arma su pedido y te lo envia armado con
+  items, talles, cantidades y total.
+- **Panel de admin** (`/admin/login.html`): creas y editas productos con fotos,
+  categoria, precio de venta, precio de lista (tachado), precio de compra,
+  cantidad y talles.
+- **Ganancia visible**: con el precio de compra cargado, el panel te muestra la
+  ganancia potencial de cada producto y el total.
+- **Calculadora de precios**: te dice a cuánto vender segun lo que pagaste,
+  con escenarios (1.5x, 2.5x, 3x), margen neto y redondeo psicologico.
+- **Fotos con IA**: subis la foto del producto y el boton "Generar foto" la
+  convierte en una imagen de catalogo. Si es ropa la muestra con maniqui; si es
+  tecnologia, perfume u otro producto, la muestra en set de estudio.
 
-## 🚀 Cómo iniciarlo
+## Como iniciarlo
 
 Doble clic en **`Iniciar Tienda.bat`** (o en una terminal: `npm start`).
 
-| Página | URL |
+| Pagina | URL |
 |---|---|
 | Tienda (clientes) | http://localhost:3000 |
 | Panel de admin | http://localhost:3000/admin/login.html |
 
-**Usuario y contraseña por defecto:** `admin` / `cambia123`
-⚠️ Cambialos en el archivo `.env` antes de publicar.
+**Usuario y contrasena por defecto:** `admin` / `cambia123`
+Cambialos en el archivo `.env` antes de publicar.
 
-## ⚙️ Configuración (archivo `.env`)
+## Configuracion (archivo `.env`)
 
 ```
 PORT=3000
 ADMIN_USER=admin
 ADMIN_PASSWORD=cambia123
 JWT_SECRET=pon-aqui-un-texto-largo-y-aleatorio
-IA_PROVIDER=              # gemini | openai  (vacío = IA desactivada)
+IA_PROVIDER=              # gemini | openai  (vacio = IA desactivada)
 IA_API_KEY=               # tu clave de API
-WHATSAPP_NUMBER=5491122334455   # con código de país, solo dígitos
-STORE_NAME=Mi Tienda de Ropa
-CURRENCY=$
+WHATSAPP_NUMBER=51987654321   # con codigo de pais, solo digitos
+STORE_NAME=Mi Tienda
+CURRENCY=S/
 ```
 
-También podés cambiar **nombre de tienda, WhatsApp y moneda** desde el panel → Ajustes.
+Tambien podes cambiar **nombre de tienda, logo, WhatsApp y moneda** desde el
+panel, pestana Ajustes.
 
-## 🤖 Activar la foto de modelo con IA
+## Activar las fotos con IA
 
 1. Conseguí una clave de API de **Google Gemini** (aistudio.google.com) o **OpenAI**.
-2. En `.env` completá:
+2. En `.env` completa:
    - `IA_PROVIDER=gemini` + `IA_API_KEY=tu-clave`, o
    - `IA_PROVIDER=openai` + `IA_API_KEY=tu-clave`
-3. Reiniciá el servidor.
-4. En el panel, al editar un producto, en cada foto de prenda aparece el botón **"🤖 Foto de modelo"**. Tarda unos segundos y la imagen generada se agrega a la galería (podés hacerla principal).
+3. Reinicia el servidor.
+4. En el panel, al editar un producto, en cada foto aparece el boton
+   **"Generar foto"**. Tarda unos segundos y la imagen generada se agrega a la
+   galeria (podes hacerla principal).
 
-> Es un servicio de pago por imagen (centavos por foto). Sin clave, el botón se avisa y podés subir vos las fotos de modelo manualmente.
+Es un servicio de pago por imagen (centavos por foto). Sin clave, el boton lo
+avisa y podes subir vos las fotos manualmente.
 
-## 📁 Estructura
+## Campos de precio
+
+| Campo | Para que sirve |
+|---|---|
+| Precio de compra / costo | Lo que pagaste. De ahi sale tu ganancia y la calculadora. |
+| Precio de venta | Lo que cobra el cliente. |
+| Precio de lista / tachado | Opcional. Si es mayor que el de venta, aparece tachado con su badge de descuento. |
+
+El costo **nunca se muestra al cliente**: solo se expone en el panel.
+
+## Talles
+
+Solo ropa. Hay letras (XS, S, M, L, XL...), numericas de pantalon en pulgadas
+(26 a 44) y "Unico". Un producto sin talles (tecnologia, perfume, hogar) se
+vende normalmente: el selector de talle no aparece.
+
+## Estructura
 
 ```
 CatalogoRopa/
 ├── Iniciar Tienda.bat      ← doble clic para arrancar
 ├── package.json
-├── .env                    ← configuración (no compartir)
+├── .env                    ← configuracion (no compartir)
 ├── server/                 ← backend (Node.js + Express + SQLite)
 │   ├── index.js
 │   ├── db.js               ← base de datos (data/app.db)
@@ -62,7 +94,7 @@ CatalogoRopa/
 │   ├── routes/             ← API de productos, fotos, IA, ajustes
 │   └── services/imageGen.js
 ├── public/                 ← frontend (lo que ve el cliente)
-│   ├── index.html          ← catálogo
+│   ├── index.html          ← catalogo
 │   ├── producto.html       ← detalle de producto
 │   ├── admin/              ← login y panel de admin
 │   ├── css/styles.css
@@ -71,17 +103,23 @@ CatalogoRopa/
 └── uploads/                ← fotos de productos
 ```
 
-## 🧪 Flujo del admin
+## Flujo del admin
 
-1. Entrá al panel → **＋ Nuevo producto** → nombre, precio, cantidad, descripción y talles → Guardar.
-2. Con el producto abierto, **subí la foto de la prenda** (arrastrar y soltar o clic).
-3. Opcional: **🤖 Foto de modelo** para convertir la foto en imagen de modelo/maniquí.
-4. Elegí la **foto principal** (★) y publicá.
+1. Entra al panel → **Nuevo producto** → nombre, categoria, precios, cantidad,
+   descripcion y talles (si aplica) → Guardar.
+2. Con el producto abierto, **subi la foto** (arrastrar y soltar o clic).
+   Acepta JPG, PNG, WEBP, HEIC y mas; podes recortar, zoom y rotar antes de subir.
+3. Opcional: **Generar foto** para crear la version de catalogo con IA.
+4. Elegi la **foto principal** (estrella) y publica.
 5. El producto aparece en la tienda y el cliente puede pedirlo por WhatsApp.
 
-## 🔧 Solución de problemas
+## Solucion de problemas
 
-- **"No se encontró node"**: instalá Node.js LTS desde nodejs.org y volvé a ejecutar el `.bat`.
-- **Puerto ocupado**: cambiá `PORT=3001` en `.env`.
-- **La IA no genera foto**: revisá que `IA_PROVIDER` e `IA_API_KEY` estén completos en `.env` y reiniciá.
-- **Contraseña olvidada**: borrá `data/app.db` (perdés los productos) o cambiala con un script; mejor: recordá guardarla.
+- **"No se encontro node"**: instala Node.js LTS desde nodejs.org y vuelve a
+  ejecutar el `.bat`.
+- **Puerto ocupado**: cambia `PORT=3001` en `.env`.
+- **La IA no genera foto**: revisa que `IA_PROVIDER` e `IA_API_KEY` esten
+  completos en `.env` y reinicia.
+- **La foto no se ve**: usa el ajustador al subirla; recorta y exporta en JPG.
+- **Contrasena olvidada**: borra `data/app.db` (perdes los productos) o cambiala
+  con un script; mejor: guardala.
