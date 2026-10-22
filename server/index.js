@@ -9,8 +9,19 @@ const app = express();
 app.disable('x-powered-by');
 app.use(express.json({ limit: '2mb' }));
 
+// Sin cache para HTML, CSS y JS: así siempre ves la última versión de la tienda.
+// (Las fotos de /uploads sí se cachean 7 días, son pesadas e inmutables.)
+app.use((req, res, next) => {
+  if (/\.(html?|css|js)$/i.test(req.path) || req.path === '/') {
+    res.set('Cache-Control', 'no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+  next();
+});
+
 // Archivos estaticos del sitio
-app.use(express.static(path.join(ROOT, 'public')));
+app.use(express.static(path.join(ROOT, 'public'), { etag: true, lastModified: true }));
 // Fotos subidas y generadas
 app.use('/uploads', express.static(UPLOADS_DIR, { maxAge: '7d' }));
 
