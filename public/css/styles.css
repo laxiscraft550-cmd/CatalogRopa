@@ -267,20 +267,34 @@ h1, h2, h3, h4, .brand { font-family: var(--font-display); font-weight: 300; let
 @keyframes favPop { 0% { transform: scale(1); } 40% { transform: scale(1.45); } 100% { transform: scale(1); } }
 @media (hover: none) { .fav-btn { opacity: 1; transform: none; } }
 
-/* ---------- Botón Agregar rápido ---------- */
-.quick-add {
+/* ---------- Acciones rápidas sobre la tarjeta ---------- */
+.card-actions {
   position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 3;
-  height: 36px; border: 1px solid var(--ink); border-radius: 2px;
+  display: flex; gap: 6px;
+  opacity: 0; transition: opacity .3s var(--ease);
+}
+.product-card:hover .card-actions { opacity: 1; }
+@media (hover: none) { .card-actions { opacity: 1; } }
+
+.quick-add {
+  flex: 1; height: 36px; border: 1px solid var(--ink); border-radius: 2px;
   background: rgba(255, 255, 255, .96);
   color: var(--ink); font-size: .58rem; font-weight: 400; letter-spacing: .18em; text-transform: uppercase;
   display: flex; align-items: center; justify-content: center; gap: 7px;
-  opacity: 0;
-  transition: opacity .3s var(--ease), background .25s, color .25s;
+  transition: background .25s, color .25s;
 }
-.product-card:hover .quick-add { opacity: 1; }
 .quick-add:hover { background: var(--ink); color: var(--paper); }
 .quick-add.added { background: var(--ink); color: var(--paper); }
-@media (hover: none) { .quick-add { opacity: 1; } }
+
+.quick-wa {
+  width: 36px; height: 36px; flex-shrink: 0;
+  border: 1px solid var(--ink); border-radius: 2px;
+  background: rgba(255, 255, 255, .96); color: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+  transition: background .25s, color .25s, transform .25s var(--ease);
+}
+.quick-wa svg { width: 17px; height: 17px; }
+.quick-wa:hover { background: var(--green); border-color: var(--green); color: #fff; transform: translateY(-1px); }
 
 /* ---------- Fila de beneficios bajo el riel ---------- */
 .pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 4px 0 0; }
@@ -516,6 +530,83 @@ h1, h2, h3, h4, .brand { font-family: var(--font-display); font-weight: 300; let
 .toast.show { transform: translate(-50%, 0); }
 .toast.error { background: var(--red); }
 .toast-ico svg { width: 18px; height: 18px; }
+
+/* ---------- Barra de avance del scroll ---------- */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 200;
+  background: transparent; pointer-events: none;
+}
+.scroll-progress span {
+  display: block; height: 100%; width: 0%;
+  background: var(--ink); transition: width .1s linear;
+}
+
+/* ---------- Secciones por categoría ---------- */
+.toolbar-section { padding: 8px 0 4px; }
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding-bottom: 6px; }
+
+.cat-section { padding: 30px 0 22px; scroll-margin-top: 90px; }
+.cat-section + .cat-section { border-top: 1px solid var(--border); }
+.cat-head { margin-bottom: 26px; }
+.cat-head .kicker { display: block; color: var(--muted); margin-bottom: 12px; }
+.cat-title-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-bottom: 14px; border-bottom: 1px solid var(--ink); }
+.cat-title-row h2 {
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem); font-weight: 200; letter-spacing: -.03em; line-height: 1.05;
+}
+.cat-count { font-size: .62rem; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); transition: color .25s; }
+.cat-count:hover { color: var(--text); }
+.clear-filter {
+  border: 1px solid var(--border); border-radius: 2px; background: var(--paper);
+  padding: 8px 15px; font-size: .6rem; letter-spacing: .16em; text-transform: uppercase; color: var(--muted);
+  transition: border-color .25s, color .25s;
+}
+.clear-filter:hover { border-color: var(--ink); color: var(--text); }
+
+/* Número de sección grande, tipo editorial */
+.cat-idx { font-size: .62rem; letter-spacing: .2em; color: var(--stone); }
+
+/* ---------- Cómo pedir ---------- */
+.section-band { background: var(--fog); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.how { padding: 54px 0; }
+.how-head { margin-bottom: 34px; }
+.how-head .kicker { display: block; color: var(--muted); margin-bottom: 12px; }
+.how-head h2 { font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 200; letter-spacing: -.03em; }
+.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+.how-step { position: relative; padding: 8px 30px 8px 0; border-right: 1px solid var(--border); }
+.how-step:last-child { border-right: 0; }
+.how-step:not(:first-child) { padding-left: 30px; }
+.how-num { font-size: .62rem; letter-spacing: .2em; color: var(--stone); display: block; margin-bottom: 16px; }
+.how-ico { display: inline-flex; color: var(--ink); margin-bottom: 14px; }
+.how-ico svg { width: 26px; height: 26px; }
+.how-step h3 { font-size: 1.02rem; font-weight: 400; margin-bottom: 8px; letter-spacing: -.01em; }
+.how-step p { font-size: .85rem; color: var(--muted); font-weight: 300; max-width: 34ch; }
+@media (max-width: 760px) {
+  .how-grid { grid-template-columns: 1fr; }
+  .how-step { border-right: 0; border-bottom: 1px solid var(--border); padding: 20px 0; }
+  .how-step:not(:first-child) { padding-left: 0; }
+  .how-step:last-child { border-bottom: 0; }
+}
+
+/* ---------- Botón flotante de WhatsApp ---------- */
+.wa-fab {
+  position: fixed; right: 20px; bottom: 20px; z-index: 150;
+  width: 56px; height: 56px; border: 0; border-radius: 50%;
+  background: var(--green); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .25s var(--ease), background .25s;
+}
+.wa-fab svg { width: 28px; height: 28px; }
+.wa-fab:hover { transform: scale(1.08); background: var(--green-dark); }
+.wa-fab:active { transform: scale(.96); }
+.wa-fab-tip {
+  position: absolute; right: 68px; top: 50%; transform: translateY(-50%) translateX(8px);
+  background: var(--ink); color: #fff; white-space: nowrap;
+  font-size: .66rem; letter-spacing: .1em; text-transform: uppercase;
+  padding: 9px 14px; border-radius: 2px;
+  opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s var(--ease);
+}
+.wa-fab:hover .wa-fab-tip { opacity: 1; transform: translateY(-50%) translateX(0); }
+@media (max-width: 620px) { .wa-fab-tip { display: none; } .wa-fab { width: 52px; height: 52px; right: 16px; bottom: 16px; } }
 
 /* ============================================================
    ADMIN

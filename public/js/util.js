@@ -138,6 +138,20 @@ function initHeaderScroll() {
   }, { passive: true });
 }
 
+/* ---------- Barra de avance del scroll ---------- */
+function initScrollProgress() {
+  const bar = document.querySelector('.js-progress');
+  if (!bar) return;
+  const update = () => {
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = h > 0 ? Math.min(100, (window.scrollY / h) * 100) : 0;
+    bar.style.width = pct + '%';
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  update();
+}
+
 /* ---------- Efecto ripple en botones ---------- */
 function initRipple(root = document) {
   root.addEventListener('click', (e) => {
